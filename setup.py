@@ -19,6 +19,8 @@ if __name__ == '__main__':
         zip_safe=False,
         install_requires=[
             'Flask',
+            'flask-cache',
+            'requests',
             'PyYaml',
             'simplejson',
             'hitsl.utils',
