@@ -58,7 +58,7 @@ class TsukinoUsagiClient(object):
                 self.on_error()
                 continue
             try:
-                config = result.json()
+                config = result.json()['result']
             except ValueError:
                 logger.error('Invalid JSON')
                 self.on_error()
