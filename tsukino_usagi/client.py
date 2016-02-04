@@ -99,7 +99,11 @@ def configure_usagi():
         import uwsgidecorators
 
         logger.debug('Using uWSGI')
-        TsukinoUsagiClient.__call__ = uwsgidecorators.thread(TsukinoUsagiClient.trier)
+
+        def __call__(self):
+            uwsgidecorators.thread(self.trier)
+
+        TsukinoUsagiClient.__call__ = __call__
     except ImportError:
         try:
             import threading
