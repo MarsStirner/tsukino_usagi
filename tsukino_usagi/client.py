@@ -50,7 +50,7 @@ class TsukinoUsagiClient(object):
             try:
                 result = requests.get(url)
             except requests.ConnectionError:
-                logger.exception('Connection error')
+                logger.error('Connection error')
                 self.on_error()
                 continue
             if result.status_code != 200:

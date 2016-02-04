@@ -23,7 +23,7 @@ if __name__ == '__main__':
             'requests',
             'PyYaml',
             'simplejson',
-            'hitsl.utils',
+            'hitsl_utils',
         ],
         classifiers=[
             "Development Status :: 4 - Beta",
