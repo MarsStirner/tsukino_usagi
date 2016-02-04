@@ -109,7 +109,7 @@ def configure_usagi():
             import threading
 
             def __call__(self):
-                threading.Thread(target=self.trier).run()
+                threading.Thread(target=self.trier).start()
 
             logger.debug('Using threading')
             TsukinoUsagiClient.__call__ = __call__
