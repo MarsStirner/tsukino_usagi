@@ -40,8 +40,24 @@ class TsukinoUsagiClient(object):
         self.subsystem = subsystem
         self.configured = False
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, style='blocking'):
+        method = getattr(self, 'trier_' + style)
+        if method:
+            method()
+        else:
+            logger.error('Style %s not implemented')
+            raise NotImplemented
+
+    def trier_blocking(self):
         self.trier()
+
+    def trier_threading(self):
+        import threading
+        threading.Thread(target=self.trier).start()
+
+    def trier_uwsgi(self):
+        import uwsgidecorators
+        uwsgidecorators.thread(self.trier)()
 
     def trier(self):
         url = '%s/%s' % (self.url, self.subsystem)
@@ -94,28 +110,3 @@ class TsukinoUsagiClient(object):
         yield 'Not configured yet'
 
 
-def configure_usagi():
-    try:
-        import uwsgidecorators
-
-        logger.debug('Using uWSGI')
-
-        def __call__(self):
-            uwsgidecorators.thread(self.trier)
-
-        TsukinoUsagiClient.__call__ = __call__
-    except ImportError:
-        try:
-            import threading
-
-            def __call__(self):
-                threading.Thread(target=self.trier).start()
-
-            logger.debug('Using threading')
-            TsukinoUsagiClient.__call__ = __call__
-        except ImportError:
-            logger.critical('Cannot run application')
-            exit(-1)
-
-configure_usagi()
-del configure_usagi
