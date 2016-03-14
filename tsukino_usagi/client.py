@@ -4,6 +4,10 @@ import logging
 
 import time
 
+import yaml
+
+from tsukino_usagi.loader import ConfigLoader
+
 __author__ = 'viruzzz-kun'
 
 
@@ -32,8 +36,7 @@ class TsukinoUsagiClient(object):
     ... app.wsgi_app = usagi.app
     ... usagi()
     """
-    
-    
+
     def __init__(self, app, url, subsystem):
         self.wsgi_app = app
         self.url = url.rstrip('/')
@@ -41,12 +44,25 @@ class TsukinoUsagiClient(object):
         self.configured = False
 
     def __call__(self, style='blocking'):
+        if self.url.startswith('file://'):
+            self.url = self.url[7:]
+        if self.url.startswith('/'):
+            style = 'file'
         method = getattr(self, 'trier_' + style)
         if method:
             method()
         else:
             logger.error('Style %s not implemented')
             raise NotImplemented
+
+    def trier_file(self):
+        with open(self.url, 'r') as f:
+            yml = yaml.load(f, ConfigLoader)
+        config = yml['subsystems'][self.subsystem]
+        logger.debug('Applying configuration from file')
+        self.on_configuration(config)
+        self.configured = True
+        logger.debug('Application configured')
 
     def trier_blocking(self):
         self.trier()
