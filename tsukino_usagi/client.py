@@ -58,7 +58,7 @@ class TsukinoUsagiClient(object):
     def trier_file(self):
         with open(self.url, 'r') as f:
             yml = yaml.load(f, ConfigLoader)
-        config = yml['subsystems'][self.subsystem]
+        config = yml['subsystems'][self.subsystem]['app']
         logger.debug('Applying configuration from file')
         self.on_configuration(config)
         self.configured = True
