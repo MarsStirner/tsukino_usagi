@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import flask
 import yaml
 
 from hitsl_utils.api import api_method, ApiException
@@ -18,6 +19,12 @@ def hello_world():
     return load_config()['subsystems']
 
 
+@app.route('/favicon.ico')
+def favicon():
+    return flask.abort(404)
+
+
+@app.route('/<subsys>')
 @app.route('/<subsys>/')
 @api_method
 def get_config(subsys):

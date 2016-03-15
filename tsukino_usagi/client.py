@@ -11,8 +11,10 @@ from tsukino_usagi.loader import ConfigLoader
 __author__ = 'viruzzz-kun'
 
 
+handler = logging.StreamHandler()
+handler.setFormatter(logging.Formatter('%(asctime)s [pid:%(process)d|%(name)s|%(levelname)s] - %(message)s'))
 logger = logging.getLogger('Usagi')
-logger.addHandler(logging.StreamHandler())
+logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
 
