@@ -28,7 +28,12 @@ class ConfigLoader(yaml.Loader):
             kwds.update(copy.deepcopy(ancestor))
         kwds.update(updater)
 
+    def readfile(self, node):
+        filename = os.path.join(self._root, self.construct_scalar(node))
+        with open(filename, 'r') as f:
+            return f.read()
+
+
 ConfigLoader.add_constructor('!include', ConfigLoader.include)
 ConfigLoader.add_constructor('!inherit', ConfigLoader.inherit)
-
-
+ConfigLoader.add_constructor('!readfile', ConfigLoader.readfile)
