@@ -25,7 +25,7 @@ def favicon():
 
 
 @app.route('/<subsys>')
-@app.route('/<subsys>/')
+# @app.route('/<subsys>/')
 @api_method
 def get_config(subsys):
     try:
