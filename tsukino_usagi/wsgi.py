@@ -62,5 +62,5 @@ load_config = cache.cached(timeout=60, key_prefix='internals/%s')(load_config_in
 
 
 if __name__ == '__main__':
-    app.run(port=6702)
+    app.run(port=6602)
 
