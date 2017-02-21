@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import os
+
 import flask
 import yaml
 
@@ -62,5 +64,5 @@ load_config = cache.cached(timeout=60, key_prefix='internals/%s')(load_config_in
 
 
 if __name__ == '__main__':
-    app.run(port=6602)
+    app.run(port=int(os.environ.get('TSUKINO_USAGI_PORT', 6602)))
 
